@@ -2,10 +2,13 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useId } from "react";
 import styles from "./ContactForm.module.css";
+import { useDispatch } from "react-redux";
+import { addContact } from "../../redux/contactsSlice";
 
-const ContactForm = ({ onSubmit }) => {
+const ContactForm = () => {
   const nameId = useId();
   const numberId = useId();
+  const dispatch = useDispatch();
 
   const validationSchema = Yup.object({
     name: Yup.string()
@@ -28,7 +31,13 @@ const ContactForm = ({ onSubmit }) => {
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={(values, { resetForm }) => {
-        onSubmit(values.name, values.number);
+        dispatch(
+          addContact({
+            id: crypto.randomUUID(),
+            name: values.name,
+            number: values.number,
+          })
+        );
         resetForm();
       }}
     >
@@ -45,7 +54,7 @@ const ContactForm = ({ onSubmit }) => {
             id={numberId}
             name="number"
             onInput={(e) => {
-              e.target.value = e.target.value.replace(/\D/g, ""); // Видаляє всі нецифрові символи
+              e.target.value = e.target.value.replace(/\D/g, "");
             }}
           />
           <ErrorMessage

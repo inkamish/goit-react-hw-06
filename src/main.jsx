@@ -4,8 +4,13 @@ import "./index.css";
 import App from "./components/App.jsx";
 import "modern-normalize";
 
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </StrictMode>
 );
